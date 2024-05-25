@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "nya.tuyw.ottotrident.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "ottoTrident.refmap.json",
+  "mixins": [
+  "MixinLivingEntity"
+],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

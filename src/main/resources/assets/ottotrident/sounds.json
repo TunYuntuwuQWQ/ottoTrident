@@ -1,0 +1,9 @@
+{
+  "sound_waah": {
+    "subtitle": "subtitle.ottotrident.waah",
+    "sounds": [
+      "ottotrident:waah1",
+      "ottotrident:waah2"
+    ]
+  }
+}
