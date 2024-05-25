@@ -1,6 +1,5 @@
 package nya.tuyw.ottotrident.mixin;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Attackable;
@@ -26,12 +25,18 @@ public abstract class MixinLivingEntity extends Entity implements Attackable, ne
 
     @Shadow protected abstract void setLivingEntityFlag(int p_21156_, boolean p_21157_);
 
+    @Shadow protected abstract void checkAutoSpinAttack(AABB p_21072_, AABB p_21073_);
+
     public MixinLivingEntity(EntityType<?> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
     @Redirect(method = "aiStep",at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;checkAutoSpinAttack(Lnet/minecraft/world/phys/AABB;Lnet/minecraft/world/phys/AABB;)V"))
-    protected void checkAutoSpinAttack(LivingEntity instance, AABB ab, AABB aabb){
+    protected void checkAutoSpinAttack(LivingEntity instance, AABB ab, AABB aabb){;
+        if (!((Object)this instanceof Player player)) {
+            checkAutoSpinAttack(ab,aabb);
+            return;
+        }
         AABB AABB = ab.minmax(aabb);
         List<Entity> list = this.level().getEntities(this, AABB);
         if (!list.isEmpty()) {
@@ -39,7 +44,6 @@ public abstract class MixinLivingEntity extends Entity implements Attackable, ne
                 if (entity instanceof LivingEntity) {
                     this.doAutoAttackOnTouch((LivingEntity) entity);
                     this.autoSpinAttackTicks = 0;
-                    Player player = Minecraft.getInstance().player;
                     float f7 = player.getYRot();
                     float f = player.getXRot();
                     float f1 = -Mth.sin(f7 * ((float)Math.PI / 180F)) * Mth.cos(f * ((float)Math.PI / 180F));
